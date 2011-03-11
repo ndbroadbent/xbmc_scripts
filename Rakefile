@@ -17,7 +17,7 @@ end
 initialize_xbmc
 
 desc "Play a url or file in XBMC"
-task "play_media" do
+task "play" do
   raise "You must specify a URL or file to be played!" unless ENV["url"]
 
   # Set volume to comfortable level.
@@ -25,6 +25,8 @@ task "play_media" do
 
   # -----------------------------------------------------------
   # Currently not possible to call XBMC.PlayMedia lastfm://xxxxxxxxxxxxxxxxxxxxx
+
+  Xbmc::XBMC.play ENV["url"]
 
 end
 

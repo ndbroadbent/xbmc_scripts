@@ -1,10 +1,8 @@
-require "whenever/capistrano"
-
 set :application, "xbmc_scripts"
 set :repository,  "https://github.com/ndbroadbent/xbmc_scripts.git"
 set :scm, :git
 set :user, "root"
-server "flat10c-media", :app, :web, :primary => true
+server "flat10c-media", :app
 set :deploy_to, "/opt/scripts/#{application}"
 
 set :keep_releases, 3
@@ -22,10 +20,13 @@ end
 # ---------------------------------------------------
 
 after "deploy",        "deploy:symlink_shared"
-after "deploy",        "whenever:update_crontab"
+after "deploy",        "install:crontab"
 after "deploy:update", "deploy:cleanup"
 after "deploy:setup",  "setup:config"
 after "deploy:setup",  "install:gems"
+after "deploy:cold",   "deploy:create_shared_dirs"
+after "deploy:cold",   "deploy:setup"
+after "deploy:setup",  "deploy:symlink_shared"
 
 # ---------------------------------------------------
 #                   Deploy Tasks
@@ -34,8 +35,12 @@ after "deploy:setup",  "install:gems"
 namespace :deploy do
   desc "Symlink shared files"
   task :symlink_shared do
-    run "mkdir -p #{shared_path}/config"
     run "ln -nfs #{shared_path}/config/config.yml #{current_path}/config/config.yml"
+  end
+
+  desc "Create dir structure"
+  task :create_shared_dirs do
+    run "mkdir -p #{shared_path}/config"
   end
 end
 
@@ -47,6 +52,11 @@ namespace :install do
   desc "Install bundled gems."
   task :gems do
     run "cd #{current_path} && bundle install --without development"
+  end
+
+  desc "Install whenever crontab"
+  task :crontab do
+    run "cd #{current_path} && whenever --update-crontab"
   end
 end
 
