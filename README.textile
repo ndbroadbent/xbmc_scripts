@@ -1,0 +1,2 @@
+h3. A set of ruby scripts and cron jobs to automate XBMC.
+

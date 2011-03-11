@@ -1,0 +1,44 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    aaronh-chronic (0.3.9)
+    activesupport (3.0.5)
+    capistrano (2.5.19)
+      highline
+      net-scp (>= 1.0.0)
+      net-sftp (>= 2.0.0)
+      net-ssh (>= 2.0.14)
+      net-ssh-gateway (>= 1.0.0)
+    capistrano_colors (0.5.2)
+    crack (0.1.8)
+    highline (1.6.1)
+    httparty (0.7.4)
+      crack (= 0.1.8)
+    i18n (0.5.0)
+    json (1.5.1)
+    net-scp (1.0.4)
+      net-ssh (>= 1.99.1)
+    net-sftp (2.0.5)
+      net-ssh (>= 2.0.9)
+    net-ssh (2.0.24)
+    net-ssh-gateway (1.0.1)
+      net-ssh (>= 1.99.1)
+    railsless-deploy (1.0.2)
+    whenever (0.6.6)
+      aaronh-chronic (>= 0.3.9)
+      activesupport (>= 2.3.4)
+    xbmc-client (0.1.2)
+      activesupport (>= 3.0.0)
+      httparty (>= 0.6.0)
+      i18n
+      json (>= 1.4.5)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  capistrano
+  capistrano_colors
+  railsless-deploy
+  whenever
+  xbmc-client
