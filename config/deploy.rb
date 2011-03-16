@@ -1,3 +1,6 @@
+require 'rvm/capistrano'
+set :rvm_ruby_version, "ruby-1.9.2-p180"
+
 set :application, "xbmc_scripts"
 set :repository,  "https://github.com/ndbroadbent/xbmc_scripts.git"
 set :scm, :git
@@ -6,11 +9,6 @@ server "flat10c-media", :app
 set :deploy_to, "/opt/scripts/#{application}"
 
 set :keep_releases, 3
-
-# Set correct ruby path for gems and gem binaries.
-ruby_version = "ruby-1.9.2-p180"
-default_environment['GEM_PATH'] = "/usr/local/rvm/gems/#{ruby_version}"
-default_environment['PATH'] = "/usr/local/rvm/gems/#{ruby_version}/bin:/usr/local/rvm/gems/#{ruby_version}@global/bin:/usr/local/rvm/rubies/#{ruby_version}/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games"
 
 # Helper method which prompts for user input
 def prompt_with_default(prompt, var, default)
