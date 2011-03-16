@@ -25,7 +25,7 @@ task "play" do
   Xbmc::XBMC.set_volume ENV["volume"] || 25
 
   # Play stream
-  Xbmc::XBMC.play ENV["url"]
+  Xbmc::XBMC.play ENV["url"].gsub(" ", "%20")
 end
 
 namespace "audio" do
