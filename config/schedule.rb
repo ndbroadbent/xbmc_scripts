@@ -1,4 +1,12 @@
-#every 1.day, :at => '7:30 am' do
-#  command "rake play_media url=lastfm://globaltags/worship"
-#end
+# ---------------------------------------------------------
+#                    XBMC Schedule
+# ---------------------------------------------------------
+
+every 1.day, :at => '7:20 am' do
+  rake "play url=lastfm://globaltags/worship"
+end
+
+every 1.day, :at => '8:30 am' do
+  rake "audio:pause"
+end
 
