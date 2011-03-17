@@ -38,7 +38,6 @@ after "deploy:setup",   "deploy:symlink_shared"
 after "deploy:symlink", "deploy:symlink_shared"
 after "deploy:update",  "deploy:cleanup"
 
-after "deploy:update_code", "whenever:clear_crontab"
 after "deploy:symlink",     "whenever:update_crontab"
 after "deploy:rollback",    "whenever:update_crontab"
 
