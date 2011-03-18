@@ -15,7 +15,7 @@ def initialize_xbmc
 end
 
 def set_volume(volume)
-  Xbmc::XBMC.set_volume volume
+  Xbmc::XBMC.set_volume(volume.to_i)
 end
 
 initialize_xbmc
@@ -25,15 +25,13 @@ task "play" do
   raise "You must specify a URL or file to be played!" unless ENV["url"]
   #---------------------------------------------------------------------
   # Set volume to comfortable level.
-  set_volume ENV["volume"].to_i || 25
+  set_volume(ENV["volume"] || 40)
   # Play stream
-  Xbmc::XBMC.play ENV["url"].gsub(" ", "%20")
+  Xbmc::XBMC.play(ENV["url"].gsub(" ", "%20"))
 end
 
 desc "Set the volume to ENV['volume']"
-task "set_volume" do
-  set_volume ENV["volume"]
-end
+task "set_volume" do; set_volume(ENV["volume"]); end
 
 namespace "audio" do
   desc "Pause XBMC AudioPlayer"

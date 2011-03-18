@@ -17,6 +17,6 @@ end
 
 # Chill-out on a monday morning.
 every :monday, :at => '9:15 am' do
-  xbmc "play url=lastfm://globaltags/chillout volume=25"
+  xbmc "play url=lastfm://globaltags/chillout volume=30"
 end
 
