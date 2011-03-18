@@ -8,6 +8,13 @@ set :user, "root"
 server "flat10c-media", :app
 set :deploy_to, "/opt/scripts/#{application}"
 
+# Settings for whenever
+# ---------------------------------------------------------------------
+set(:whenever_command)      { "whenever" }
+set(:whenever_identifier)   { application }
+set(:whenever_update_flags) { "--update-crontab #{whenever_identifier}"}
+set(:whenever_clear_flags)  { "--clear-crontab #{whenever_identifier}" }
+
 set :keep_releases, 3
 
 # Helper method which prompts for user input
@@ -22,14 +29,17 @@ end
 #                 Before / After Hooks
 # ---------------------------------------------------
 
-after "deploy",        "deploy:symlink_shared"
-after "deploy",        "install:crontab"
-after "deploy:update", "deploy:cleanup"
-after "deploy:setup",  "setup:config"
-after "deploy:setup",  "install:gems"
-after "deploy:cold",   "deploy:create_shared_dirs"
-after "deploy:cold",   "deploy:setup"
-after "deploy:setup",  "deploy:symlink_shared"
+after "deploy:cold",    "deploy:create_shared_dirs"
+after "deploy:cold",    "deploy:setup"
+after "deploy:setup",   "setup:config"
+after "deploy:setup",   "install:gems"
+after "deploy:setup",   "deploy:symlink_shared"
+
+after "deploy:symlink", "deploy:symlink_shared"
+after "deploy:update",  "deploy:cleanup"
+
+after "deploy:symlink",     "whenever:update_crontab"
+after "deploy:rollback",    "whenever:update_crontab"
 
 # ---------------------------------------------------
 #                   Deploy Tasks
@@ -56,10 +66,20 @@ namespace :install do
   task :gems do
     run "cd #{current_path} && bundle install --without development"
   end
+end
 
-  desc "Install whenever crontab"
-  task :crontab do
-    run "cd #{current_path} && whenever --update-crontab"
+# ---------------------------------------------------
+#                   Whenever Tasks
+# ---------------------------------------------------
+
+namespace :whenever do
+  desc "Update application's crontab entries using Whenever"
+  task :update_crontab do
+    run "cd #{current_path} && #{whenever_command} #{whenever_update_flags}"
+  end
+  desc "Clear application's crontab entries using Whenever"
+  task :clear_crontab do
+    run "cd #{current_path} && #{whenever_command} #{whenever_clear_flags}; echo"
   end
 end
 
